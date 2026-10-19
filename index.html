@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f7f9fc">
+<title>Blount Biology | Interactive Biology Investigations</title>
+<style>
+:root{--claret:#670e36;--background:#f7f9fc;--circle:#dcecf9;--border:#e5e7eb;--white:#fff}*{box-sizing:border-box}html{font-family:Helvetica,Arial,sans-serif;color:var(--claret);background:var(--background)}body{margin:0;min-height:100vh}main{width:min(100% - 36px,780px);margin:0 auto;padding:58px 0 64px}header{text-align:center;margin-bottom:37px}h1{font-size:clamp(2rem,5vw,2.8rem);letter-spacing:-.045em;margin:0 0 9px;font-weight:700}header p{margin:0;font-size:1.02rem;line-height:1.5}.sections{display:grid;gap:12px}.category{background:var(--white);border:1px solid var(--border);border-radius:13px;overflow:hidden;transition:border-color .18s ease,box-shadow .18s ease}.category:hover{border-color:#d7d4db;box-shadow:0 2px 10px rgba(39,22,37,.035)}.category summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:17px;padding:15px 19px;min-height:86px;user-select:none}.category summary::-webkit-details-marker{display:none}.category summary:focus-visible{outline:3px solid #a5c8e8;outline-offset:-4px;border-radius:12px}.icon-circle{width:52px;height:52px;flex:0 0 52px;display:grid;place-items:center;border-radius:50%;background:var(--circle);color:var(--claret);transition:transform .18s ease}.icon-circle svg{width:27px;height:27px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.category summary:hover .icon-circle{transform:scale(1.035)}.category-title{font-size:1.14rem;font-weight:600;line-height:1.3;flex:1}.chevron{width:20px;height:20px;flex:0 0 20px;transition:transform .18s ease;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}.category[open] .chevron{transform:rotate(180deg)}.contents{border-top:1px solid #eff0f3;margin:0 19px;padding:17px 0 19px 69px}.empty{font-size:.93rem;margin:0;opacity:.76}.activity{display:flex;gap:12px;align-items:center;justify-content:space-between}.activity-info{min-width:0}.activity-name{font-weight:600;font-size:1rem;margin:0 0 6px}.activity-description{font-size:.9rem;line-height:1.5;margin:0;opacity:.84}.activity-link{flex-shrink:0;display:inline-flex;align-items:center;gap:5px;border:1px solid #d8c7d0;color:var(--claret);border-radius:8px;text-decoration:none;font-size:.87rem;font-weight:600;padding:9px 12px;transition:background .15s ease,border-color .15s ease}.activity-link:hover{background:#f9f1f5;border-color:#b99aaa}.activity-link:focus-visible{outline:3px solid #a5c8e8;outline-offset:2px}.activity-link svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}footer{text-align:center;font-size:.78rem;opacity:.65;margin-top:36px}@media(max-width:540px){main{width:min(100% - 24px,780px);padding-top:39px}header{margin-bottom:28px}.category summary{padding:13px 14px;gap:13px;min-height:78px}.icon-circle{width:47px;height:47px;flex-basis:47px}.category-title{font-size:1.03rem}.contents{margin:0 14px;padding:16px 0 17px 60px}.activity{align-items:flex-start;flex-direction:column;gap:13px}.activity-link{align-self:flex-start}}@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<main>
+<header><h1>Blount Biology</h1><p>Interactive Biology Investigations</p></header>
+<div class="sections" id="sections"></div>
+<footer>Blount Biology</footer>
+</main>
+<script src="https://unpkg.com/lucide@0.456.0/dist/umd/lucide.min.js"></script>
+<script>
+// Add new activities by editing the activities array for the relevant category.
+// Links beginning with / work on both blountbiology.github.io and blountbiology.org.
+const categories=[
+ {title:'Biochemistry',icon:'flask-conical',activities:[]},
+ {title:'Cells',icon:'microscope',activities:[]},
+ {title:'Genetics & Heredity',icon:'dna',activities:[]},
+ {title:'Classification & Taxonomy',icon:'network',activities:[]},
+ {title:'Evolution',icon:'leaf',activities:[{title:'MRSA: When Antibiotics Stop Working',description:'Explore natural selection and the evolution of antibiotic resistance.',url:'/mrsa-simulator/'}]},
+ {title:'Ecology',icon:'trees',activities:[]}
+];
+// Use the actual Lucide icon library, matching the approved preview.
+// These are the original Lucide icon names, not hand-drawn approximations.
+const escapeHTML=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const root=document.getElementById('sections');
+categories.forEach(cat=>{
+ const details=document.createElement('details');details.className='category';
+ const summary=document.createElement('summary');
+ summary.innerHTML=`<span class="icon-circle"><i data-lucide="${cat.icon}" aria-hidden="true"></i></span><span class="category-title">${escapeHTML(cat.title)}</span><svg class="chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>`;
+ details.append(summary);
+ const contents=document.createElement('div');contents.className='contents';
+ if(!cat.activities.length){contents.innerHTML='<p class="empty">Activities coming soon.</p>'}
+ else cat.activities.forEach(a=>{
+  const item=document.createElement('div');item.className='activity';
+  const info=document.createElement('div');info.className='activity-info';
+  info.innerHTML=`<p class="activity-name">${escapeHTML(a.title)}</p><p class="activity-description">${escapeHTML(a.description)}</p>`;
+  const link=document.createElement('a');link.className='activity-link';link.href=a.url;
+  link.innerHTML='Open <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>';
+  item.append(info,link);contents.append(item);
+ });
+ details.append(contents);root.append(details);
+});
+// Replace icon placeholders with official Lucide SVGs after building the sections.
+if (window.lucide) window.lucide.createIcons({attrs:{'stroke-width':1.8}});
+</script>
+</body>
+</html>
